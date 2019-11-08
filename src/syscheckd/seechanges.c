@@ -120,8 +120,6 @@ int symlink_to_dir (const char *filename) {
 }
 #endif
 
-/* Return TRUE if the file name match one of the ``nodiff`` entries.
-   Return FALSE otherwise */
 int is_nodiff(const char *filename){
     if (syscheck.nodiff){
         int i;
@@ -300,7 +298,6 @@ static int seechanges_createpath(const char *filename)
     return (1);
 }
 
-/* Check if the file has changed */
 char *seechanges_addfile(const char *filename)
 {
     time_t old_date_of_change;

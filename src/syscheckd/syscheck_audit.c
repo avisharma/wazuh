@@ -82,7 +82,6 @@ static regex_t regexCompiled_syscall;
 static regex_t regexCompiled_dev;
 
 
-// Check if Auditd is installed and running
 int check_auditd_enabled(void) {
 
     PROCTAB *proc = openproc(PROC_FILLSTAT | PROC_FILLSTATUS | PROC_FILLCOM );
@@ -203,7 +202,6 @@ int init_auditd_socket(void) {
 
     return sfd;
 }
-
 
 int add_audit_rules_syscheck(bool first_time) {
     unsigned int i = 0;
@@ -415,7 +413,6 @@ int init_regex(void) {
 
 
 // LCOV_EXCL_START
-// Init Audit events reader thread
 int audit_init(void) {
     audit_health_check_creation = 0;
     audit_health_check_deletion = 0;
@@ -1205,7 +1202,6 @@ void * audit_main(int *audit_sock) {
     return NULL;
 }
 // LCOV_EXCL_STOP
-
 
 void audit_read_events(int *audit_sock, int mode) {
     size_t byteRead;

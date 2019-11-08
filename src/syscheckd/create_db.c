@@ -169,8 +169,7 @@ void fim_checker(char *path, fim_element *item, whodata_evt *w_evt) {
     }
 }
 
-
-int fim_directory (char *dir, fim_element *item, whodata_evt *w_evt) {
+int fim_directory(char *dir, fim_element *item, whodata_evt *w_evt) {
     DIR *dp;
     struct dirent *entry;
     char *f_name;
@@ -227,8 +226,7 @@ int fim_directory (char *dir, fim_element *item, whodata_evt *w_evt) {
     return 0;
 }
 
-
-int fim_file (char *file, fim_element *item, whodata_evt *w_evt) {
+int fim_file(char *file, fim_element *item, whodata_evt *w_evt) {
     cJSON * json_event = NULL;
     fim_entry_data * entry_data = NULL;
     fim_entry_data * saved_data = NULL;
@@ -370,7 +368,7 @@ void fim_audit_inode_event(char *file, const char *inode_key, fim_event_mode mod
     return;
 }
 
-int fim_registry_event (char * key, fim_entry_data * data, int pos) {
+int fim_registry_event(char * key, fim_entry_data * data, int pos) {
     cJSON * json_event = NULL;
     fim_entry_data *saved_data;
     char * json_formated;
@@ -467,8 +465,6 @@ int fim_configuration_directory(const char * path, const char entry[]) {
     return position;
 }
 
-
-// Evaluates the depth of the directory or file to check if it exceeds the configured max_depth value
 int fim_check_depth(char * path, int dir_position) {
     char * pos;
     int depth = -1;
@@ -499,7 +495,7 @@ int fim_check_depth(char * path, int dir_position) {
 
 
 // Get data from file
-fim_entry_data * fim_get_data (const char *file, fim_element *item) {
+fim_entry_data * fim_get_data(const char *file, fim_element *item) {
     fim_entry_data * data = NULL;
 
     os_calloc(1, sizeof(fim_entry_data), data);
@@ -614,8 +610,6 @@ fim_entry_data * fim_get_data (const char *file, fim_element *item) {
     return data;
 }
 
-
-// Initialize fim_entry_data structure
 void init_fim_data_entry(fim_entry_data *data) {
     data->size = 0;
     data->perm = NULL;
@@ -631,8 +625,6 @@ void init_fim_data_entry(fim_entry_data *data) {
     data->hash_sha256[0] = '\0';
 }
 
-
-// Returns checksum string
 void fim_get_checksum (fim_entry_data * data) {
     char *checksum = NULL;
     int size;
@@ -679,9 +671,7 @@ void fim_get_checksum (fim_entry_data * data) {
     free(checksum);
 }
 
-
-// Inserts a file in the syscheck hash table structure (inodes and paths)
-int fim_insert (char * file, fim_entry_data * data, __attribute__((unused))struct stat *file_stat) {
+int fim_insert(char *file, fim_entry_data *data, __attribute__((unused))struct stat *file_stat) {
     if (rbtree_insert(syscheck.fim_entry, file, data) == NULL) {
         mdebug1(FIM_RBTREE_DUPLICATE_INSERT, file);
         return -1;
@@ -700,9 +690,7 @@ int fim_insert (char * file, fim_entry_data * data, __attribute__((unused))struc
     return 0;
 }
 
-
-// Update an entry in the syscheck hash table structure (inodes and paths)
-int fim_update (char * file, fim_entry_data * data, __attribute__((unused)) fim_entry_data * old_data) {
+int fim_update(char *file, fim_entry_data *data, __attribute__((unused)) fim_entry_data *old_data) {
     if (!file || strcmp(file, "") == 0) {
         merror(FIM_ERROR_UPDATE_ENTRY, "");
         return -1;
@@ -716,7 +704,7 @@ int fim_update (char * file, fim_entry_data * data, __attribute__((unused)) fim_
     snprintf(old_inode_key, OS_SIZE_128, "%lu:%lu", (unsigned long)old_data->dev, (unsigned long)old_data->inode);
 
     // If we detect a inode change, remove old entry from inode hash table
-    if(strcmp(inode_key, old_inode_key) != 0) {
+    if (strcmp(inode_key, old_inode_key) != 0) {
         delete_inode_item(old_inode_key, file);
     }
 
@@ -733,9 +721,8 @@ int fim_update (char * file, fim_entry_data * data, __attribute__((unused)) fim_
     return 0;
 }
 
-
 #ifndef WIN32
-int fim_update_inode(char * file, char inode_key[]) {
+int fim_update_inode(char *file, char inode_key[]) {
     fim_inode_data * inode_data;
 
     if (inode_data = OSHash_Get(syscheck.fim_inode, inode_key), !inode_data) {
@@ -759,9 +746,7 @@ int fim_update_inode(char * file, char inode_key[]) {
 }
 #endif
 
-
-// Deletes a path from the syscheck hash table structure and sends a deletion event
-void fim_delete(char *file_name) {
+int fim_delete (char * file_name) {
     fim_entry_data * data;
 
     if (data = rbtree_get(syscheck.fim_entry, file_name), data) {
@@ -775,8 +760,6 @@ void fim_delete(char *file_name) {
     }
 }
 
-
-// Deletes a path from the syscheck hash table structure and sends a deletion event on scheduled scans
 void check_deleted_files() {
     cJSON * json_event = NULL;
     char * json_formated;
@@ -1146,7 +1129,6 @@ int fim_check_restrict (const char *file_name, OSMatch *restriction) {
     return 0;
 }
 
-
 void free_entry_data(fim_entry_data * data) {
     if (!data) {
         return;
@@ -1177,7 +1159,6 @@ void free_entry_data(fim_entry_data * data) {
     os_free(data);
 }
 
-
 void free_inode_data(fim_inode_data * data) {
     int i;
 
@@ -1191,7 +1172,6 @@ void free_inode_data(fim_inode_data * data) {
     os_free(data->paths);
     os_free(data);
 }
-
 
 void fim_print_info() {
 #ifndef WIN32

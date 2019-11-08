@@ -48,7 +48,6 @@ static void fim_send_msg(char mq, const char * location, const char * msg) {
     }
 }
 
-// Send a data synchronization control message
 void fim_send_sync_msg(const char * msg) {
     mdebug2(FIM_DBSYNC_SEND, msg);
     fim_send_msg(DBSYNC_MQ, SYSCHECK, msg);
@@ -85,8 +84,6 @@ int send_log_msg(const char * msg)
     return (0);
 }
 
-
-// Periodically run the integrity checker
 void start_daemon()
 {
     int day_scanned = 0;
