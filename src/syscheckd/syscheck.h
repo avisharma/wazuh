@@ -63,49 +63,51 @@ typedef struct fim_element {
 /** Function Prototypes **/
 
 /**
- * @brief Check the integrity of the files against the saved database
+ * @brief Checks the integrity of the files against the saved database.
  *
  */
 void run_check(void);
 
 
 /**
- * @brief Start the file integrity monitoring daemon
+ * @brief Starts the file integrity monitoring daemon.
  *
  */
 void start_daemon(void);
 
 /**
- * @brief Read Syscheck configuration from the XML configuration file
+ * @brief Reads Syscheck configuration from the XML configuration file.
  *
- * @param cfgfile Path of the XML configuration file
- * @return 1 if there are no configured directories or registries, 0 on success, -1 on error
+ * @param cfgfile Path of the XML configuration file.
+ * @retval 1 if there are no configured directories or registries.
+ * @retval 0 on success.
+ * @retval -1 on error.
  */
 int Read_Syscheck_Config(const char *cfgfile) __attribute__((nonnull));
 
 /**
- * @brief Get the Syscheck Config object
+ * @brief Converts the syscheck configuration into a human readable JSON format.
  *
- * @return JSON format configuration
+ * @return JSON format syscheck configuration.
  */
 cJSON *getSyscheckConfig(void);
 
 /**
- * @brief Get the Syscheck Internal Options object
+ * @brief Converts the syscheck internal configuration into a human readable JSON format.
  *
- * @return JSON format configuration
+ * @return JSON format syscheck internal configuration.
  */
 cJSON *getSyscheckInternalOptions(void);
 
 /**
- * @brief Read the syscheck internal options (to be deprecated)
+ * @brief Reads the syscheck internal options (to be deprecated).
  *
- * @param debug_level Debug level to be set in the syscheck daemon
+ * @param debug_level Debug level to be set in the syscheck daemon.
  */
 void read_internal(int debug_level);
 
 /**
- * @brief Performs an integrity monitoring scan
+ * @brief Performs an integrity monitoring scan.
  *
  */
 void fim_scan();
@@ -114,147 +116,157 @@ void fim_scan();
 /**
  * @brief
  *
- * @param [] path Path of the file to check
- * @param [out] item FIM item
- * @param [in] w_evt Whodata event
+ * @param [] path Path of the file to check.
+ * @param [out] item FIM item.
+ * @param [in] w_evt Whodata event.
  */
 void fim_checker(char *path, fim_element *item, whodata_evt *w_evt);
 
 // TODO
 /**
- * @brief Check file integrity monitoring on a specific folder
+ * @brief Checks file integrity monitoring on a specific folder.
  *
  * @param [] dir
- * @param [out] item FIM item
- * @param [in] w_evt Whodata event
- * @return 0 on success, -1 on failure
+ * @param [out] item FIM item.
+ * @param [in] w_evt Whodata event.
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int fim_directory(char *dir, fim_element *item, whodata_evt *w_evt);
 
 // TODO
 /**
- * @brief Check file integrity monitoring on a specific file
+ * @brief Checks file integrity monitoring on a specific file.
  *
  * @param [] file
- * @param [in] item FIM item
- * @param [in] w_evt Whodata event
- * @return 0 on success, -1 on failure
+ * @param [in] item FIM item.
+ * @param [in] w_evt Whodata event.
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int fim_file(char *file, fim_element *item, whodata_evt *w_evt);
 
 // TODO
 /**
- * @brief Process FIM realtime event
+ * @brief Process FIM realtime event.
  *
- * @param [] file Path of the file to check
+ * @param [] file Path of the file to check.
  */
 void fim_realtime_event(char *file);
 
 /**
- * @brief Process FIM whodata event
+ * @brief Process FIM whodata event.
  *
- * @param w_evt Whodata event
+ * @param w_evt Whodata event.
  */
 void fim_whodata_event(whodata_evt *w_evt);
 
 // TODO
 /**
- * @brief Process FIM audit event
+ * @brief Process FIM audit event.
  *
- * @param [] file Path of the file to check
- * @param [in] inode_key Inode key of the file to check
- * @param [in] mode 1 means realtime, 2 means whodata
- * @param [in] w_evt Whodata event
+ * @param [] file Path of the file to check.
+ * @param [in] inode_key Inode key of the file to check.
+ * @param [in] mode 1 means realtime, 2 means whodata.
+ * @param [in] w_evt Whodata event.
  */
 void fim_audit_inode_event(char *file, const char *inode_key, fim_event_mode mode, whodata_evt *w_evt);
 
 /**
- * @brief Check file integrity monitoring on a specific registry
+ * @brief Checks file integrity monitoring on a specific registry.
  *
- * @param key Path of the registry to check
- * @param data Data to insert in the FIM databse
- * @param pos Position of the specific registry in the registry configuration array
- * @return -1 on error, 0 if the registry hasn't changed, 1 if the registry is new, 2 if the registry has changed
+ * @param key Path of the registry to check.
+ * @param data Data to insert in the FIM databse.
+ * @param pos Position of the specific registry in the registry configuration array.
+ * @retval -1 on error.
+ * @retval 0 if the registry hasn't changed.
+ * @retval 1 if the registry is new.
+ * @retval 2 if the registry has changed.
  */
 int fim_registry_event(char *key, fim_entry_data *data, int pos);
 
 /**
- * @brief Search the position of the path in directories array
+ * @brief Searches the position of the path in directories array.
  *
- * @param path Path to seek in the directories array
- * @param entry "file", for file checking or "registry" for registry checking
- * @return Returns the position of the path in the directories array, -1 if the path is not found
+ * @param path Path to seek in the directories array.
+ * @param entry "file", for file checking or "registry" for registry checking.
+ * @retval The position of the path in the directories array.
+ * @retval -1 if the path is not found.
  */
 int fim_configuration_directory(const char *path, const char entry[]);
 
 /**
- * @brief Evaluates the depth of the directory or file to check if it exceeds the configured max_depth value
+ * @brief Evaluates the depth of the directory or file to check if it exceeds the configured max_depth value.
  *
- * @param path File name of the file/directory to check
- * @param dir_position Position of the file to check in the directories array
- * @return Depth of the directory/file, -1 on error
+ * @param path File name of the file/directory to check.
+ * @param dir_position Position of the file to check in the directories array.
+ * @retval Depth of the directory/file.
+ * @retval -1 on failure.
  */
 int fim_check_depth(char *path, int dir_position);
 
 /**
- * @brief Get data from file
+ * @brief Gets data from file.
  *
- * @param file_name Name of the file to get the data from
- * @param item FIM item asociated with the file
+ * @param file_name Name of the file to get the data from.
+ * @param item FIM item asociated with the file.
  *
- * @return A fim_entry_data structure with the data from the file
+ * @return A fim_entry_data structure with the data from the file.
  */
 fim_entry_data * fim_get_data(const char *file_name, fim_element *item);
 
 /**
- * @brief Initialize a fim_entry_data structure
+ * @brief Initializes a fim_entry_data structure.
  *
- * @param [out] data Data to initialize
+ * @param [out] data Data to initialize.
  */
 void init_fim_data_entry(fim_entry_data *data);
 
 /**
- * @brief Calculate checksum of a FIM entry data
+ * @brief Calculates checksum of a FIM entry data.
  *
- * @param data FIM entry data to calculate the checksum with
+ * @param data FIM entry data to calculate the checksum with.
  */
 void fim_get_checksum(fim_entry_data *data);
 
 /**
- * @brief Inserts a file in the syscheck hash table structure (inodes and paths)
+ * @brief Inserts a file in the syscheck hash table structure (inodes and paths).
  *
- * @param file_name Name of the file to insert in the hash table
- * @param data Entry data to insert in the hash table
- * @param file_stat Stat structure of the file to insert in the hash table
- * @return 0 on success, -1 on error
+ * @param file_name Name of the file to insert in the hash table.
+ * @param data Entry data to insert in the hash table.
+ * @param file_stat Stat structure of the file to insert in the hash table.
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int fim_insert(char *file_name, fim_entry_data *data, struct stat *file_stat);
 
 /**
- * @brief Update an entry in the syscheck hash table structure (inodes and paths)
+ * @brief Updates an entry in the syscheck hash table structure (inodes and paths).
  *
- * @param file Name of the file to be updated in the hash table
- * @param data Entry data used to update the hash table
- * @param old_data Old entry data to be updated in the hash table
- * @return 0 on success, -1 on error
+ * @param file Name of the file to be updated in the hash table.
+ * @param data Entry data used to update the hash table.
+ * @param old_data Old entry data to be updated in the hash table.
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int fim_update(char *file, fim_entry_data *data, fim_entry_data *old_data);
 
 #ifndef WIN32
 /**
- * @brief Update an entry in the inode agent's database
+ * @brief Updates an entry in the inode agent's database.
  *
- * @param file Name of the file to be updated in the agent's database
- * @param inode_key Inode key to be updated
- * @return 0 on success, -1 on error
+ * @param file Name of the file to be updated in the agent's database.
+ * @param inode_key Inode key to be updated.
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int fim_update_inode(char * file, char inode_key[]);
 #endif
 
 /**
- * @brief Deletes a path from the structure and sends a deletion event
+ * @brief Deletes a path from the structure and sends a deletion event.
  *
- * @param file_name Name of the file to be deleted in the agent's database
+ * @param file_name Name of the file to be deleted in the agent's database.
  */
 void fim_delete(char *file_name);
 
@@ -266,12 +278,12 @@ void fim_delete(char *file_name);
 void fim_print_info();
 
 /**
- * @brief Checks for deleted files, deletes them from the agent's database and sends a deletion event on scheduled scans
+ * @brief Checks for deleted files, deletes them from the agent's database and sends a deletion event on scheduled scans.
  *
  */
 void check_deleted_files();
 
-//
+// TODO
 void delete_inode_item(char *inode, char *file_name);
 
 /**
@@ -306,35 +318,36 @@ void delete_inode_item(char *inode, char *file_name);
 cJSON *fim_json_event(char *file_name, fim_entry_data *old_data, fim_entry_data *new_data, int pos, fim_event_type type, fim_event_mode mode, whodata_evt *w_evt);
 
 /**
- * @brief Frees the memory of a FIM entry data structure
+ * @brief Frees the memory of a FIM entry data structure.
  *
- * @param [out] data The FIM entry data to be freed
+ * @param [out] data The FIM entry data to be freed.
  */
 void free_entry_data(fim_entry_data *data);
 
 /**
- * @brief Frees the memory of a FIM inode data structure
+ * @brief Frees the memory of a FIM inode data structure.
  *
- * @param [out] data The FIM inode data to be freed
+ * @param [out] data The FIM inode data to be freed.
  */
 void free_inode_data(fim_inode_data *data);
 
 /**
- * @brief Check the registries in the configuration for changes
+ * @brief Checks the registries in the configuration for changes.
  *
  */
 void os_winreg_check(void);
 
 /**
- * @brief Start real time monitoring
+ * @brief Starts real time monitoring.
  *
- * @return 0 on success, -1 on error
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int realtime_start(void);
 
 // TODO
 /**
- * @brief Add a directory to real time monitoring
+ * @brief Adds a directory to real time monitoring.
  *
  * @param dir
  * @param whodata
@@ -343,44 +356,45 @@ int realtime_start(void);
 int realtime_adddir(const char *dir, int whodata) __attribute__((nonnull(1)));
 
 /**
- * @brief Process events in the real time queue
+ * @brief Process events in the real time queue.
  *
  */
 void realtime_process(void);
 
 /**
- * @brief Delete data form dir_tb hash table
+ * @brief Deletes data form dir_tb hash table.
  *
- * @param [out] data
+ * @param [out] data The data to delete.
  */
 void free_syscheck_dirtb_data(char *data);
 
 /**
- * @brief Check if a file has changed
+ * @brief Checks if a file has changed.
  *
- * @param filename The name of the file to be checked
- * @return The diff alert generated, NULL on error
+ * @param filename The name of the file to be checked.
+ * @retval The diff alert generated.
+ * @retval NULL on error.
  */
 char *seechanges_addfile(const char *filename) __attribute__((nonnull));
 
 /**
- * @brief Frees the memory of a Whodata event structure
+ * @brief Frees the memory of a Whodata event structure.
  *
- * @param [out] w_evt
+ * @param [out] w_evt The Whodata event object to be freed.
  */
 void free_whodata_event(whodata_evt *w_evt);
 
 /**
- * @brief Send a message related to syscheck change/addition
+ * @brief Sends a message related to syscheck change/addition.
  *
- * @param msg The message to be sent
+ * @param msg The message to be sent.
  */
 void send_syscheck_msg(const char *msg) __attribute__((nonnull));
 
 /**
- * @brief Send a data synchronization control message
+ * @brief Send a data synchronization control message.
  *
- * @param msg The message to be sent
+ * @param msg The message to be sent.
  */
 void fim_send_sync_msg(const char *msg);
 
@@ -398,89 +412,92 @@ int send_log_msg(const char *msg);
 #define HEALTHCHECK_MODE 1
 
 /**
- * @brief Initialize Audit events reader thread
+ * @brief Initialize Audit events reader thread.
  *
- * @return 1 on success, -1 on error
+ * @retval 1 on success.
+ * @retval -1 on failure.
  */
 int audit_init(void);
 
 /**
- * @brief Retrieves the id of an audit event
+ * @brief Retrieves the id of an audit event.
  *
- * @param event An audit event
- * @return The string id of the event
+ * @param event An audit event.
+ * @return The string id of the event.
  */
 char *audit_get_id(const char * event);
 
 /**
- * @brief Initialize regular expressions
+ * @brief Initializes regular expressions.
  *
- * @return 0 on success, -1 on error
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int init_regex(void);
 
 /**
- * @brief Adds audit rules to configured directories
+ * @brief Adds audit rules to configured directories.
  *
- * @param first_time Indicates if it's the first time the rules are being added
- * @return The number of rules added
+ * @param first_time Indicates if it's the first time the rules are being added.
+ * @return The number of rules added.
  */
 int add_audit_rules_syscheck(bool first_time);
 
 /**
- * @brief Read an audit event from socket
+ * @brief Reads an audit event from socket.
  *
- * @param [out] audit_sock The audit socket to read the events from
- * @param [in] reading_mode READING_MODE or HEALTHCHECK_MODE
+ * @param [out] audit_sock The audit socket to read the events from.
+ * @param [in] reading_mode READING_MODE or HEALTHCHECK_MODE.
  */
 void audit_read_events(int *audit_sock, int reading_mode);
 
 /**
- * @brief Makes Audit thread to wait for audit healthcheck to be performed
+ * @brief Makes Audit thread to wait for audit healthcheck to be performed.
  *
  */
 void audit_set_db_consistency(void);
 
 /**
- * @brief Check if Auditd is installed and running
+ * @brief Checks if Auditd is installed and running.
  *
- * @return The PID of Auditd
+ * @return The PID of Auditd.
  */
 int check_auditd_enabled(void);
 
-// TODO
 /**
- * @brief Set Auditd socket configuration
+ * @brief Sets Auditd socket configuration.
  *
- * @return 0 on success, -1 on error
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int set_auditd_config(void);
 
 /**
- * @brief Initialize Audit evsents socket
+ * @brief Initializes Audit evsents socket.
  *
- * @return File descriptor of the socket, -1 on error
+ * @retval File descriptor of the socket.
+ * @retval -1 on failure.
  */
 int init_auditd_socket(void);
 
 /**
- * @brief Creates the necessary threads to process audit events
+ * @brief Creates the necessary threads to process audit events.
  *
- * @param [out] audit_sock The audit socket to read the events from
+ * @param [out] audit_sock The audit socket to read the events from.
  */
 void *audit_main(int *audit_sock);
 
 /**
- * @brief Reloads audit rules every RELOAD_RULES_INTERVAL seconds
+ * @brief Reloads audit rules every RELOAD_RULES_INTERVAL seconds.
  *
  */
 void *audit_reload_thread();
 
 /**
- * @brief Thread that performs a healthcheck on audit
- * It reads an event from audit socket to check if it's running
+ * @brief Thread that performs a healthcheck on audit.
+ * It reads an event from audit socket to check if it's running.
  *
- * @param [out] audit_sock The audit socket to read the events from
+ * @param [out] audit_sock The audit socket to read the events from.
  */
 void *audit_healthcheck_thread(int *audit_sock);
 
@@ -496,38 +513,40 @@ void *audit_healthcheck_thread(int *audit_sock);
 char *gen_audit_path(char *cwd, char *path0, char *path1);
 
 /**
- * @brief Reloads audit rules to configured directories
- * This is necessary to include audit rules for hot added directories in the configuration
+ * @brief Reloads audit rules to configured directories.
+ * This is necessary to include audit rules for hot added directories in the configuration.
  *
  */
 void audit_reload_rules(void);
 
 /**
- * @brief Parses an audit event and sends the corresponding alert message
+ * @brief Parses an audit event and sends the corresponding alert message.
  *
- * @param buffer The audit event to parse
+ * @param buffer The audit event to parse.
  */
 void audit_parse(char *buffer);
 
 /**
- * @brief Generate the audit event that the healthcheck thread should read
+ * @brief Generates the audit event that the healthcheck thread should read.
  *
- * @param audit_socket The audit socket to read the events from
- * @return 0 on success, -1 on error
+ * @param audit_socket The audit socket to read the events from.
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int audit_health_check(int audit_socket);
 
 /**
- * @brief Deletes all the existing audit rules added by FIM
+ * @brief Deletes all the existing audit rules added by FIM.
  *
  */
 void clean_rules(void);
 
+// TODO
 /**
  * @brief
  *
  * @param buffer
- * @return 0 if no key is found, 1 if AUDIT_KEY is found, 2 if an existing key is found, 3 if AUDIT_HEALTHCHECK_KEY is found
+ * @return 0 if no key is found, 1 if AUDIT_KEY is found, 2 if an existing key is found, 3 if AUDIT_HEALTHCHECK_KEY is found.
  */
 int filterkey_audit_events(char *buffer);
 extern W_Vector *audit_added_dirs;
@@ -540,30 +559,34 @@ extern pthread_cond_t audit_hc_started;
 extern pthread_cond_t audit_db_consistency;
 #elif WIN32
 /**
- * @brief Initializes the whodata scan mode
+ * @brief Initializes the whodata scan mode.
  *
- * @return 0 on success, 1 on error
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int run_whodata_scan(void);
 
+// TODO
 /**
  * @brief
  *
- * @return 0 on success, 1 on error
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int whodata_audit_start();
 
 /**
- * @brief Configure the SACL in a configured folder for Whodata auditing
+ * @brief Configures the SACL in a configured folder for Whodata auditing.
  *
- * @param dir The name of the folder to configure
- * @param position The position of the folder in the configuration array
- * @return 0 on success, 1 on error
+ * @param dir The name of the folder to configure.
+ * @param position The position of the folder in the configuration array.
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int set_winsacl(const char *dir, int position);
 
 /**
- * @brief Thread that checks the status of the whodata configured folders
+ * @brief Thread that checks the status of the whodata configured folders.
  * It checks if the folder has ben re-added, if its SACL has been changed or if it has been deleted.
  *
  */
@@ -572,71 +595,75 @@ long unsigned int WINAPI state_checker(__attribute__((unused)) void *_void);
 #endif
 
 /**
- * @brief Checks if a specific file has been configured with the ``nodiff`` option
+ * @brief Checks if a specific file has been configured with the ``nodiff`` option.
  *
- * @param filename The name of the file to check
- * @return 1 if the file has been configured with the ``nodiff`` option, 0 if not
+ * @param filename The name of the file to check.
+ * @retval 1 if the file has been configured with the ``nodiff`` option.
+ * @retval 0 if not.
  */
 int is_nodiff(const char *filename);
 
 /**
- * @brief Initializes all syscheck data
+ * @brief Initializes all syscheck data.
  *
  */
 void fim_initialize();
 
 /**
- * @brief Checks if a specific file has been configured to be ignored
+ * @brief Checks if a specific file has been configured to be ignored.
  *
- * @param file_name The name of the file to check
- * @return 1 if it has been configured to be ignored, 0 if not
+ * @param file_name The name of the file to check.
+ * @return 1 if it has been configured to be ignored, 0 if not.
  */
 int fim_check_ignore(const char *file_name);
 
 /**
- * @brief Checks if a specific folder has been configured to be checked with a specific restriction
+ * @brief Checks if a specific folder has been configured to be checked with a specific restriction.
  *
- * @param file_name The name of the file to check
- * @param restriction The regex restriction to be checked
- * @return 1 if the folder has been configured with the specified restriction, 0 if not
+ * @param file_name The name of the file to check.
+ * @param restriction The regex restriction to be checked.
+ * @return 1 if the folder has been configured with the specified restriction
+ * @retval 0 if not.
  */
 int fim_check_restrict(const char *file_name, OSMatch *restriction);
 
 #ifndef WIN32
 
 /**
- * @brief Thread that creates a socket for communication with the API
- * Com request thread dispatcher
+ * @brief Thread that creates a socket for communication with the API.
+ * Com request thread dispatcher.
  *
- * @param Argument to be passed to the thread
+ * @param Argument to be passed to the thread.
  */
 void *syscom_main(void *arg);
 #endif
 
 /**
- * @brief Dispatches messages from API directed to syscheck module
+ * @brief Dispatches messages from API directed to syscheck module.
  *
- * @param [in] command The input command sent from the API
- * @param [out] output The output buffer to be filled (answer for the API)
- * @return The size of the output buffer
+ * @param [in] command The input command sent from the API.
+ * @param [out] output The output buffer to be filled (answer for the API).
+ * @return The size of the output buffer.
  */
 size_t syscom_dispatch(char *command, char **output);
 
+// TODO
 /**
  * @brief
  *
- * @param [in] section The specific section to be checked sent from the API
- * @param [out] output The output buffer to be filled (answer for the API)
- * @return The size of the output buffer
+ * @param [in] section The specific section to be checked sent from the API.
+ * @param [out] output The output buffer to be filled (answer for the API).
+ * @return The size of the output buffer.
  */
 size_t syscom_getconfig(const char *section, char **output);
 
 #ifdef WIN_WHODATA
 /**
- * @brief Updates the SACL of an specific file
+ * @brief Updates the SACL of an specific file.
  *
- * @param obj_path The path of the file to update the SACL of
- * @return 0 on success, -1 on error
+ * @param obj_path The path of the file to update the SACL of.
+ * @retval 0 on success.
+ * @retval -1 on failure.
  */
 int w_update_sacl(const char *obj_path);
 #endif
@@ -646,24 +673,25 @@ int w_update_sacl(const char *obj_path);
 #endif
 
 /**
- * @brief Thread that performs the syscheck data synchronization
+ * @brief Thread that performs the syscheck data synchronization.
  *
- * @param args To be used with NULL value
+ * @param args To be used with NULL value.
  */
 void *fim_run_integrity(void *args);
 
 /**
- * @brief Calculates the checksum of the FIM entry files and sends it to the database for integrity checking
+ * @brief Calculates the checksum of the FIM entry files and sends it to the database for integrity checking.
  *
  */
 void fim_sync_checksum();
 
+// TODO
 /**
- * @brief Calculates the checksum of the FIM entry files starting from `start` letter and finishing at `top` letter
- * It also sends it to the database for integrity checking
+ * @brief Calculates the checksum of the FIM entry files starting from `start` letter and finishing at `top` letter.
+ * It also sends it to the database for integrity checking.
  *
- * @param start The letter to start checking from
- * @param top The letter to finish checking to
+ * @param start The letter to start checking from.
+ * @param top The letter to finish checking to.
  * @param id
  */
 void fim_sync_checksum_split(const char *start, const char *top, long id);
@@ -678,16 +706,16 @@ void fim_sync_checksum_split(const char *start, const char *top, long id);
 void fim_sync_send_list(const char *start, const char *top);
 
 /**
- * @brief Dispatches a message coming to the syscheck queue
+ * @brief Dispatches a message coming to the syscheck queue.
  *
- * @param payload The message to dispatch
+ * @param payload The message to dispatch.
  */
 void fim_sync_dispatch(char *payload);
 
 /**
- * @brief Push a message to the syscheck queue
+ * @brief Pushes a message to the syscheck queue.
  *
- * @param msg The specific message to be pushed
+ * @param msg The specific message to be pushed.
  */
 void fim_sync_push_msg(const char *msg);
 
@@ -814,7 +842,7 @@ cJSON * fim_audit_json(const whodata_evt * w_evt);
 cJSON * fim_scan_info_json(fim_scan_event event, long timestamp);
 
 /**
- * @brief Send a scan info event
+ * @brief Sends a scan info event.
  *
  * @param event Event type (start or end).
  */
